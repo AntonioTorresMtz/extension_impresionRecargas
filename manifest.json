@@ -9,12 +9,10 @@
   "content_scripts": [
     {
       "js": [
-        "scripts/content.js",
-        "scripts/sweetalert2.min.js"
+        "scripts/content.js"        
       ],
       "matches": [
-        "https://prontipagos.mx/*",
-        "https://developer.chrome.com/docs/webstore/*"
+        "https://prontipagos.mx/*"        
       ],
       "type": "module"
     }
