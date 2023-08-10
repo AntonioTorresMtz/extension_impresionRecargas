@@ -1,0 +1,23 @@
+{
+  "manifest_version": 3,
+  "name": "Mi primera extension",
+  "description": "Base Level Extension",
+  "version": "1.0",
+  "action": {
+    "default_popup": "popup.html"
+  },
+  "content_scripts": [
+    {
+      "js": [
+        "scripts/content.js",
+        "scripts/sweetalert2.min.js"
+      ],
+      "matches": [
+        "https://prontipagos.mx/*",
+        "https://developer.chrome.com/docs/webstore/*"
+      ],
+      "type": "module"
+    }
+  ],
+  "permissions": ["scripting"]
+}
