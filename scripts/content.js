@@ -1,4 +1,4 @@
-const url = "https://recargas-tickets.com/api/recargas"; // Reemplaza con la URL de tu endpoint
+const url = "http://127.0.0.1/backend_recargasImpresion/public/api/recargas"; // Reemplaza con la URL de tu endpoint
 
 if (document.getElementById("form1")) {
   var data = obtenerValores();
@@ -18,7 +18,8 @@ if (document.getElementById("form1")) {
       console.error("Error:", error); // Manejo de errores
     });
 } else {
-  var data = {
+  console.log("Sin informacion para insertar")
+  /*var data = {
     amount: 200,
     titleTicket: "Venta paquete",
     phone: "4434100234",
@@ -41,7 +42,7 @@ if (document.getElementById("form1")) {
     })
     .catch((error) => {
       console.error("Error:", error); // Manejo de errores
-    });
+    });*/
 }
 
 function obtenerValores() {
@@ -92,6 +93,7 @@ function verificaSaldo() {
     alert("Tu saldo es de: " + valorMostrar + " considera poner una recarga");
 }
 
+/*
 function formatoFecha(fechaOriginal) {
   // Crear un objeto Date utilizando la fecha original
   var fecha = new Date(fechaOriginal);
@@ -107,5 +109,35 @@ function formatoFecha(fechaOriginal) {
   // Formatear la fecha en el formato DATETIME (YYYY-MM-DD HH:MI:SS)
   var fechaFormateada = `${año}-${mes}-${dia} ${hora}:${minutos}:${segundos}`;
 
+  return fechaFormateada;
+}*/
+
+function formatoFecha(fechaOriginal) {
+  // Dividir la cadena de fecha en componentes de día, mes y año
+  var partes = fechaOriginal.split(' ')[0].split('/');
+  var horaPartes = fechaOriginal.split(' ')[1].split(':');
+
+  // Asignar los componentes de fecha y hora
+  var dia = partes[0];
+  var mes = partes[1] - 1; // Restar 1 porque los meses en JavaScript van de 0 a 11
+  var año = partes[2];
+  var horas = horaPartes[0];
+  var minutos = horaPartes[1];
+  var segundos = horaPartes[2];
+
+  // Crear un objeto Date utilizando los componentes
+  var fecha = new Date(año, mes, dia, horas, minutos, segundos);
+
+  // Obtener los componentes de la fecha
+  var añoFormateado = fecha.getFullYear();
+  var mesFormateado = ("0" + (fecha.getMonth() + 1)).slice(-2); // Sumar 1 porque los meses en JavaScript van de 0 a 11
+  var diaFormateado = ("0" + fecha.getDate()).slice(-2);
+  var horaFormateada = ("0" + fecha.getHours()).slice(-2);
+  var minutosFormateados = ("0" + fecha.getMinutes()).slice(-2);
+  var segundosFormateados = ("0" + fecha.getSeconds()).slice(-2);
+
+  // Formatear la fecha en el formato DATETIME (YYYY-MM-DD HH:MI:SS)
+  var fechaFormateada = `${añoFormateado}-${mesFormateado}-${diaFormateado} ${horaFormateada}:${minutosFormateados}:${segundosFormateados}`;
+  console.log(fechaFormateada);
   return fechaFormateada;
 }
