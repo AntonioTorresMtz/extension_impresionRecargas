@@ -5,6 +5,7 @@ const enviarDatos = (data) => {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
+      Accept: "application/json",
     },
     body: JSON.stringify(data),
   })
@@ -34,11 +35,11 @@ function extraerDatosDePagina() {
         const valor = columnas[1].textContent.trim();
 
         if (etiqueta.includes("producto")) {
-          resultados.producto = formatearProducto(valor);
+          resultados.tipo_recarga = formatearProducto(valor);
         } else if (etiqueta.includes("teléfono")) {
           resultados.telefono = valor;
         } else if (etiqueta.includes("cantidad")) {
-          resultados.cantidad = formatearCantidad(valor);
+          resultados.monto = parseInt(formatearCantidad(valor));
         } else if (etiqueta.includes("fecha")) {
           resultados.fecha = formatearFecha(valor);
         }
