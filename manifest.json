@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
-  "name": "Mi primera extension",
-  "description": "Base Level Extension",
+  "name": "Recargas",
+  "description": "Extension para imprimir recargas",
   "version": "1.0",
   "action": {
     "default_popup": "popup.html"
@@ -12,10 +12,10 @@
         "scripts/content.js"        
       ],
       "matches": [
-        "https://prontipagos.mx/*"        
+        "https://app.prontipagos.mx/*"        
       ],
       "type": "module"
     }
   ],
-  "permissions": ["scripting"]
+  "permissions": ["scripting", "activeTab"]
 }
