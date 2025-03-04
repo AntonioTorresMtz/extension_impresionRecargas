@@ -1,21 +1,29 @@
-const url = "http://127.0.0.1:8000/api/recargas/insertarDatos"; // Reemplaza con la URL de tu endpoint
+const url = "http://127.0.0.1/recargasBackend2/public/api/recargas/insertarDatos"; // Reemplaza con la URL de tu endpoint
+//const url = "http://127.0.0.1/backend_recargasImpresion/public/api/recargas";
+var recargaAnterior = {};
 
 const enviarDatos = (data) => {
-  fetch(url, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-    },
-    body: JSON.stringify(data),
-  })
-    .then((response) => response.json())
-    .then((result) => {
-      console.log(result); // Aquí puedes procesar la respuesta del servidor
+  if (JSON.stringify(recargaAnterior) === JSON.stringify(data)) {
+    console.log("Se esta intentando insertar una recarga ya existente");
+  } else {
+    fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Accept": "application/json",
+      },
+      body: JSON.stringify(data),
     })
-    .catch((error) => {
-      console.error("Error:", error); // Manejo de errores
-    });
+      .then((response) => response.json())
+      .then((result) => {
+        console.log(result); // Aquí puedes procesar la respuesta del servidor
+        recargaAnterior = data;
+      })
+      .catch((error) => {
+        console.error("Error:", error); // Manejo de errores
+      });
+  }
+
 };
 
 function extraerDatosDePagina() {
@@ -47,8 +55,18 @@ function extraerDatosDePagina() {
     });
   }
 
-  console.log(resultados);
-  enviarDatos(resultados);
+  if (Object.keys(resultados).length === 0) {
+    console.log("El objeto está vacío");
+  } else {
+    const elementos = validarObjeto(resultados, llaves);
+    if (elementos) {
+      enviarDatos(resultados);
+    } else {
+      console.log("NO Contiene las claves requeridas");
+      console.log(resultados);
+    }
+  }
+
 }
 
 const formatearFecha = (fechaStr) => {
@@ -68,6 +86,12 @@ function formatearCantidad(cadena) {
   const match = cadena.match(/\d+/); // Busca el primer grupo de dígitos
   return match ? match[0] : null; // Retorna solo la parte entera
 }
+
+function validarObjeto(obj, keys) {
+  return keys.every(key => key in obj);
+}
+
+const llaves = ["compania", "telefono", "monto", "fecha", "tipo_recarga"];
 
 const observer = new MutationObserver(() => {
   console.log("Detectado cambio en el DOM");
