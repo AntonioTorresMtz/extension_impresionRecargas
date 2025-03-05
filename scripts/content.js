@@ -1,6 +1,7 @@
 const url = "http://127.0.0.1/recargasBackend2/public/api/recargas/insertarDatos"; // Reemplaza con la URL de tu endpoint
 //const url = "http://127.0.0.1/backend_recargasImpresion/public/api/recargas";
 var recargaAnterior = {};
+var contadorPrecalentar = 0;
 
 const enviarDatos = (data) => {
   if (JSON.stringify(recargaAnterior) === JSON.stringify(data)) {
@@ -24,6 +25,20 @@ const enviarDatos = (data) => {
       });
   }
 
+};
+
+const precalentarServer = () => {
+  if (contadorPrecalentar < 3) {
+    fetch("http://127.0.0.1/recargasBackend2/public/api/recargas/ultimaRecarga")
+      .then((response) => response.json()) // Convertimos la respuesta a JSON
+      .then((data) => {
+        console.log(data); // Aquí manejamos los datos obtenidos
+        contadorPrecalentar = contadorPrecalentar + 1;
+      })
+      .catch((error) => {
+        console.error("Error al obtener la recarga:", error);
+      });
+  }
 };
 
 function extraerDatosDePagina() {
@@ -57,12 +72,14 @@ function extraerDatosDePagina() {
 
   if (Object.keys(resultados).length === 0) {
     console.log("El objeto está vacío");
+    precalentarServer();
   } else {
     const elementos = validarObjeto(resultados, llaves);
     if (elementos) {
       enviarDatos(resultados);
     } else {
       console.log("NO Contiene las claves requeridas");
+      precalentarServer();
       console.log(resultados);
     }
   }
